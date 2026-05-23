@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.autobots.automanager.dto.LoginReqDto;
 import com.autobots.automanager.dto.UsuarioReqDto;
 import com.autobots.automanager.dto.UsuarioResDto;
-import com.autobots.automanager.entidades.CredencialUsuarioSenha;
+
 import com.autobots.automanager.entidades.Usuario;
 import com.autobots.automanager.repositorios.UsuarioRepositorio;
 
@@ -38,6 +38,7 @@ public class UsuarioServico {
         usuario.setNome(dto.getNome());
         usuario.setNomeSocial(dto.getNomeSocial());
         usuario.setPerfis(dto.getPerfis());
+        
 
         if (dto.getEndereco() != null)
             usuario.setEndereco(enderecoServico.converterEndereco(dto.getEndereco()));
@@ -108,19 +109,8 @@ public class UsuarioServico {
             repositorio.delete(usuario);
     }
 
-    public UsuarioResDto login(LoginReqDto dto) {
-    List<Usuario> usuarios = repositorio.findAll();
+    
 
-    Usuario encontrado = usuarios.stream()
-        .filter(u -> u.getCredenciais().stream()
-            .anyMatch(c -> c instanceof CredencialUsuarioSenha &&
-                ((CredencialUsuarioSenha) c).getNomeUsuario().equals(dto.getNomeUsuario()) &&
-                ((CredencialUsuarioSenha) c).getSenha().equals(dto.getSenha())))
-        .findFirst()
-        .orElse(null);
-
-    return toResDto(encontrado);
-}
 
     public UsuarioResDto toResDto(Usuario usuario) {
         if (usuario == null) return null;

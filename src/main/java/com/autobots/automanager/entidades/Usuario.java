@@ -11,12 +11,13 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import com.autobots.automanager.modelos.Perfil;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import org.springframework.hateoas.RepresentationModel;
 
-import com.autobots.automanager.enumeracoes.PerfilUsuario;
+
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -33,7 +34,7 @@ public class Usuario extends RepresentationModel<Usuario>{
 	@Column
 	private String nomeSocial;
 	@ElementCollection(fetch = FetchType.EAGER)
-	private Set<PerfilUsuario> perfis = new HashSet<>();
+	private Set<Perfil> perfis = new HashSet<>();
 	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Set<Telefone> telefones = new HashSet<>();
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
@@ -42,8 +43,8 @@ public class Usuario extends RepresentationModel<Usuario>{
 	private Set<Documento> documentos = new HashSet<>();
 	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Set<Email> emails = new HashSet<>();
-	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private Set<Credencial> credenciais = new HashSet<>();
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	private Credencial credencial;
 	@OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.EAGER)
 	private Set<Mercadoria> mercadorias = new HashSet<>();
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })

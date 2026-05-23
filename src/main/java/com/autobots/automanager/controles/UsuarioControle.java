@@ -24,16 +24,7 @@ public class UsuarioControle {
     @Autowired
     private AdicionadorLinkUsuario adicionadorLink;
 
-    @PostMapping("/login")
-    public ResponseEntity<UsuarioResDto> login(@RequestBody LoginReqDto dto) {
-        UsuarioResDto dtoRes = usuarioServico.login(dto);
-        if (dtoRes == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-        adicionadorLink.adicionarLink(dtoRes);
-
-        return ResponseEntity.ok(dtoRes);
-}
+    
 
     @GetMapping("/usuarios")
     public ResponseEntity<List<UsuarioResDto>> obterUsuarios() {

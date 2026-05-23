@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import com.autobots.automanager.entidades.CredencialUsuarioSenha;
+import com.autobots.automanager.entidades.Credencial;
+
 import com.autobots.automanager.entidades.Documento;
 import com.autobots.automanager.entidades.Email;
 import com.autobots.automanager.entidades.Empresa;
@@ -18,10 +20,12 @@ import com.autobots.automanager.entidades.Telefone;
 import com.autobots.automanager.entidades.Usuario;
 import com.autobots.automanager.entidades.Veiculo;
 import com.autobots.automanager.entidades.Venda;
-import com.autobots.automanager.enumeracoes.PerfilUsuario;
+
 import com.autobots.automanager.enumeracoes.TipoDocumento;
 import com.autobots.automanager.enumeracoes.TipoVeiculo;
+import com.autobots.automanager.modelos.Perfil;
 import com.autobots.automanager.repositorios.EmpresaRepositorio;
+import com.autobots.automanager.repositorios.UsuarioRepositorio;
 
 @SpringBootApplication
 public class AutomanagerApplication implements CommandLineRunner {
@@ -29,12 +33,38 @@ public class AutomanagerApplication implements CommandLineRunner {
 	@Autowired
 	private EmpresaRepositorio repositorioEmpresa;
 
+	@Autowired UsuarioRepositorio repositorio;
+
 	public static void main(String[] args) {
 		SpringApplication.run(AutomanagerApplication.class, args);
 	}
 
 	@Override
 	public void run(String... args) throws Exception {
+		BCryptPasswordEncoder codificador = new BCryptPasswordEncoder();
+		Usuario usuario = new Usuario();
+		usuario.setNome("administrador");
+		usuario.getPerfis().add(Perfil.ROLE_ADMIN);
+		Credencial credencial = new Credencial();
+		credencial.setNomeUsuario("admin");
+		String senha  = "123456";
+		credencial.setSenha(codificador.encode(senha));
+		usuario.setCredencial(credencial);
+		repositorio.save(usuario);
+	
+
+		BCryptPasswordEncoder codificador2 = new BCryptPasswordEncoder();
+		Usuario usuario2 = new Usuario();
+		usuario2.setNome("administrador");
+		usuario2.getPerfis().add(Perfil.ROLE_VENDEDOR);
+		Credencial credencial2 = new Credencial();
+		credencial2.setNomeUsuario("vendedor");
+		String senha2  = "123456";
+		credencial.setSenha(codificador2.encode(senha2));
+		usuario.setCredencial(credencial2);
+		repositorio.save(usuario2);
+
+	/*
 
 		Empresa empresa = new Empresa();
 		empresa.setRazaoSocial("Car service toyota ltda");
@@ -60,7 +90,14 @@ public class AutomanagerApplication implements CommandLineRunner {
 		Usuario funcionario = new Usuario();
 		funcionario.setNome("Pedro Alcântara de Bragança e Bourbon");
 		funcionario.setNomeSocial("Dom Pedro");
-		funcionario.getPerfis().add(PerfilUsuario.FUNCIONARIO);
+		funcionario.getPerfis().add(Perfil.ROLE_VENDEDOR);
+
+		Credencial credencialVendedor = new Credencial();
+		credencialVendedor.setNomeUsuario("vendedor");
+		String senhaVendedor  = "123456";
+		credencialVendedor.setSenha(codificador.encode(senhaVendedor));
+		funcionario.setCredencial(credencialVendedor);
+		repositorio.save(funcionario);
 
 		Email emailFuncionario = new Email();
 		emailFuncionario.setEndereco("a@a.com");
@@ -92,33 +129,26 @@ public class AutomanagerApplication implements CommandLineRunner {
 
 		funcionario.getDocumentos().add(cpf);
 
-		CredencialUsuarioSenha credencialFuncionario = new CredencialUsuarioSenha();
-		credencialFuncionario.setInativo(false);
-		credencialFuncionario.setNomeUsuario("dompedrofuncionario");
-		credencialFuncionario.setSenha("123456");
-		credencialFuncionario.setCriacao(new Date());
-		credencialFuncionario.setUltimoAcesso(new Date());
-
-		funcionario.getCredenciais().add(credencialFuncionario);
+		
 
 		Usuario fornecedor = new Usuario();
 		fornecedor.setNome("Componentes varejo de partes automotivas ltda");
 		fornecedor.setNomeSocial("Loja do carro, vendas de componentes automotivos");
-		fornecedor.getPerfis().add(PerfilUsuario.FORNECEDOR);
+		fornecedor.getPerfis().add(Perfil.ROLE_GERENTE);
+
+		Credencial credencialGerente = new Credencial();
+		credencialGerente.setNomeUsuario("gerente");
+		String senhaGerente  = "123456";
+		credencialGerente.setSenha(codificador.encode(senhaGerente));
+		fornecedor.setCredencial(credencialGerente);
+		repositorio.save(fornecedor);
 
 		Email emailFornecedor = new Email();
 		emailFornecedor.setEndereco("f@f.com");
 
 		fornecedor.getEmails().add(emailFornecedor);
 
-		CredencialUsuarioSenha credencialFornecedor = new CredencialUsuarioSenha();
-		credencialFornecedor.setInativo(false);
-		credencialFornecedor.setNomeUsuario("dompedrofornecedor");
-		credencialFornecedor.setSenha("123456");
-		credencialFornecedor.setCriacao(new Date());
-		credencialFornecedor.setUltimoAcesso(new Date());
-
-		fornecedor.getCredenciais().add(credencialFornecedor);
+		
 
 		Documento cnpj = new Documento();
 		cnpj.setDataEmissao(new Date());
@@ -155,10 +185,16 @@ public class AutomanagerApplication implements CommandLineRunner {
 		Usuario cliente = new Usuario();
 		cliente.setNome("Pedro Alcântara de Bragança e Bourbon");
 		cliente.setNomeSocial("Dom pedro cliente");
-		cliente.getPerfis().add(PerfilUsuario.CLIENTE);
-
+		cliente.getPerfis().add(Perfil.ROLE_CLIENTE);
 		Email emailCliente = new Email();
 		emailCliente.setEndereco("c@c.com");
+
+		Credencial credencialCliente = new Credencial();
+		credencialCliente.setNomeUsuario("cliente");
+		String senhaCliente  = "123456";
+		credencialCliente.setSenha(codificador.encode(senhaCliente));
+		cliente.setCredencial(credencialCliente);
+		repositorio.save(cliente);
 
 		cliente.getEmails().add(emailCliente);
 
@@ -169,14 +205,7 @@ public class AutomanagerApplication implements CommandLineRunner {
 
 		cliente.getDocumentos().add(cpfCliente);
 
-		CredencialUsuarioSenha credencialCliente = new CredencialUsuarioSenha();
-		credencialCliente.setInativo(false);
-		credencialCliente.setNomeUsuario("dompedrocliente");
-		credencialCliente.setSenha("123456");
-		credencialCliente.setCriacao(new Date());
-		credencialCliente.setUltimoAcesso(new Date());
-
-		cliente.getCredenciais().add(credencialCliente);
+		//aq
 
 		Endereco enderecoCliente = new Endereco();
 		enderecoCliente.setEstado("São Paulo");
@@ -259,6 +288,7 @@ public class AutomanagerApplication implements CommandLineRunner {
 		empresa.getVendas().add(venda2);
 		
 		repositorioEmpresa.save(empresa);
+		  */
 
 	}
 }
