@@ -19,7 +19,7 @@ public class AdicionadorLinkVenda implements AdicionadorLink<VendaResDto> {
             Link linkProprio = WebMvcLinkBuilder
                     .linkTo(WebMvcLinkBuilder
                             .methodOn(VendaControle.class)
-                            .obterVenda(id))
+                            .obterVenda(id, null))
                     .withSelfRel();
             dto.add(linkProprio);
         }
@@ -31,7 +31,7 @@ public class AdicionadorLinkVenda implements AdicionadorLink<VendaResDto> {
         Link linkProprio = WebMvcLinkBuilder
                 .linkTo(WebMvcLinkBuilder
                         .methodOn(VendaControle.class)
-                        .obterVenda(objeto.getId()))
+                        .obterVenda(objeto.getId(), null))
                 .withSelfRel();
         objeto.add(linkProprio);
 

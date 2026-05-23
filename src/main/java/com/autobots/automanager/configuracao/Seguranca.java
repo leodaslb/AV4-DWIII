@@ -31,7 +31,7 @@ public class Seguranca extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private ProvedorJwt provedorJwt;
 
-	private static final String[] rotasPublicas = { "/", "/usuario/usuarios" };
+	private static final String[] rotasPublicas = { "/", "/usuario/usuarios","/empresa/empresas" };
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -58,6 +58,7 @@ public class Seguranca extends WebSecurityConfigurerAdapter {
         .hasAnyRole("ADMIN", "GERENTE", "VENDEDOR","CLIENTE")
     .antMatchers("/usuario/**")
         .hasAnyRole("ADMIN", "GERENTE", "VENDEDOR")
+	
 
     // Tudo mais só ADMIN
     .anyRequest().hasRole("ADMIN");

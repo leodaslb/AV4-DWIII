@@ -62,14 +62,14 @@ public class VendaServico {
             venda.setCliente(cliente);
         }
 
-        // busca funcionario
+        
         if (dto.getFuncionarioId() != null) {
             Usuario funcionario = usuarioRepositorio.findById(dto.getFuncionarioId())
                     .orElseThrow(() -> new RuntimeException("Funcionario não encontrado"));
             venda.setFuncionario(funcionario);
         }
 
-        // busca veiculo
+        
         if (dto.getVeiculoId() != null) {
             Veiculo veiculo = veiculoRepositorio.findById(dto.getVeiculoId())
                     .orElseThrow(() -> new RuntimeException("Veiculo não encontrado"));
@@ -98,6 +98,7 @@ public class VendaServico {
     }
 
     public Venda criarVenda(VendaReqDto dto) {
+        
         return vendaRepositorio.save(converterVenda(dto));
     }
 

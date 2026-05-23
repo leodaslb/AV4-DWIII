@@ -49,7 +49,7 @@ public class AdicionadorLinkVeiculo implements AdicionadorLink<VeiculoResDto> {
             Link linkProprietario = WebMvcLinkBuilder
                     .linkTo(WebMvcLinkBuilder
                             .methodOn(UsuarioControle.class)
-                            .obterUsuario(objeto.getProprietarioId()))
+                            .obterUsuario(objeto.getProprietarioId(), null))
                     .withRel("proprietario");
             objeto.add(linkProprietario);
         }

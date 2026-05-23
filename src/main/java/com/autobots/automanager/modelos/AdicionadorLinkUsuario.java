@@ -19,7 +19,7 @@ public class AdicionadorLinkUsuario implements AdicionadorLink<UsuarioResDto> {
             Link linkProprio = WebMvcLinkBuilder
                     .linkTo(WebMvcLinkBuilder
                             .methodOn(UsuarioControle.class)
-                            .obterUsuario(id))
+                            .obterUsuario(id, null))
                     .withSelfRel();
             dto.add(linkProprio);
         }
@@ -31,7 +31,7 @@ public class AdicionadorLinkUsuario implements AdicionadorLink<UsuarioResDto> {
         Link linkProprio = WebMvcLinkBuilder
                 .linkTo(WebMvcLinkBuilder
                         .methodOn(UsuarioControle.class)
-                        .obterUsuario(objeto.getId()))
+                        .obterUsuario(objeto.getId(), null))
                 .withSelfRel();
         objeto.add(linkProprio);
 

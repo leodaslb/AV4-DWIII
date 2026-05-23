@@ -27,7 +27,7 @@ public class AdicionadorLinkTelefone implements AdicionadorLink<TelefoneResDto> 
                 .withSelfRel();
         objeto.add(linkProprio);
 		Link listaClientes = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder
-            .methodOn(UsuarioControle.class).obterUsuario(clienteId))
+            .methodOn(UsuarioControle.class).obterUsuario(clienteId, null))
 			.withRel("todos-clientes");
     		objeto.add(listaClientes);
     }

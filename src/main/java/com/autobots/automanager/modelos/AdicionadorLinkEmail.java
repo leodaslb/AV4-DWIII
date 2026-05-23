@@ -48,7 +48,7 @@ public class AdicionadorLinkEmail implements AdicionadorLink<EmailResDto> {
         Link linkUsuario = WebMvcLinkBuilder
                 .linkTo(WebMvcLinkBuilder
                         .methodOn(UsuarioControle.class)
-                        .obterUsuario(usuarioId))
+                        .obterUsuario(usuarioId, null))
                 .withRel("usuario-dono");
         objeto.add(linkUsuario);
     }
